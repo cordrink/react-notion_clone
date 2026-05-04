@@ -1,10 +1,11 @@
 import './App.css'
+import Cover from './Pages/Cover'
 
 function App() {
   
   return (
     <>
-      Notion Clone
+      <Cover />
     </>
   )
 }
