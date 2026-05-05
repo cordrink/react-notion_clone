@@ -1,10 +1,14 @@
 .cover {
 	position: relative;
 	height: 295px;
-	border-bottom: 2px solid #eaeaea;
+	border-bottom: 2px solid #f1f1f1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: 2px solid;
+	border-radius: 10px;
+	padding: 1px;
+	background-color: #6f6f6f;
 }
 
 .button {
@@ -27,7 +31,8 @@
 }
 
 .image {
-	width: 100%;
-	max-height: 295px;
+	width: 200px;
+	height: 250px;
+	border-radius: 3px;
 	object-fit: cover;
 }

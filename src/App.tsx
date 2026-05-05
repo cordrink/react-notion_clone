@@ -1,11 +1,10 @@
-import './App.css'
-import Cover from './Pages/Cover'
+import Page from './Pages/Page'
 
 function App() {
   
   return (
     <>
-      <Cover />
+      <Page />
     </>
   )
 }
