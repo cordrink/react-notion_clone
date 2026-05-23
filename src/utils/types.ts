@@ -13,7 +13,7 @@ export type NodeData = {
   value: string;
 };
 
-export type page = {
+export type Page = {
   id: string;
   slug: string;
   title: string;
