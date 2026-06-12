@@ -1,3 +1,4 @@
+import cx from "classnames";
 import { nanoid } from "nanoid";
 import {
   useEffect,
@@ -10,7 +11,6 @@ import { useAppState } from "../state/AppStateContext";
 import type { NodeData, NodeType } from "../utils/types";
 import CommandPanel from "./CommandPanel";
 import styles from "./Node.module.css";
-import cx from "classnames"
 
 type BasicNodeProps = {
   node: NodeData;
@@ -28,7 +28,8 @@ export default function BasicNode({
   const nodeRef = useRef<HTMLDivElement>(null);
   const showCommandPanel = isFocused && node?.value?.match(/^\//);
 
-  const { changeNodeValue, changeNodeType,removeNodeByIndex, addNode } = useAppState();
+  const { changeNodeValue, changeNodeType, removeNodeByIndex, addNode } =
+    useAppState();
 
   useEffect(() => {
     if (isFocused) {
@@ -72,7 +73,7 @@ export default function BasicNode({
         return;
       }
       addNode({ type: node.type, value: "", id: nanoid() }, index + 1);
-      updateFocusedIndex(index + 1)
+      updateFocusedIndex(index + 1);
     }
 
     if (event.key === "Backspace") {

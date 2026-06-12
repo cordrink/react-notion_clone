@@ -1,18 +1,18 @@
+import cx from "classnames";
 import { useEffect, useState } from "react";
 import type { NodeType } from "../utils/types";
+import style from "./CommandePanel.module.css";
 import { useOveflowScreenBottom } from "./useOverflowsScreenBottom";
-import style from "./CommandePanel.module.css"
-import cx from "classnames"
 
 type CommandPanelProps = {
   nodeText: string;
   selectItem: (nodeType: NodeType) => void;
 };
 
-type SupportedNodeType ={
-    value: NodeType;
-    name: string;
-}
+type SupportedNodeType = {
+  value: NodeType;
+  name: string;
+};
 
 const supportedNodeTypes: SupportedNodeType[] = [
   { value: "text", name: "Text" },
@@ -44,18 +44,18 @@ export default function CommandPanel({
   }, [selectItem, selectedItemIndex]);
 
   useEffect(() => {
-    const normalizeValue = nodeText.toLowerCase().replace(/\//, "")
-    setSelectedItemIndex(supportedNodeTypes.findIndex(item => item.value.match(normalizeValue)))
+    const normalizeValue = nodeText.toLowerCase().replace(/\//, "");
+    setSelectedItemIndex(
+      supportedNodeTypes.findIndex((item) => item.value.match(normalizeValue)),
+    );
   }, [nodeText]);
 
   return (
-    <div 
-    ref={ref} 
-    className={
-        cx(style.panel, {
-          [style.reverse]: overfows,
-        })
-    }
+    <div
+      ref={ref}
+      className={cx(style.panel, {
+        [style.reverse]: overfows,
+      })}
     >
       <div className={style.title}>Blocks</div>
       <ul>
@@ -63,7 +63,11 @@ export default function CommandPanel({
           const selected = selectedItemIndex === index;
 
           return (
-            <li key={type.value} className={cx({[style.selected]: selected})} onClick={() => selectItem(type.value)}>
+            <li
+              key={type.value}
+              className={cx({ [style.selected]: selected })}
+              onClick={() => selectItem(type.value)}
+            >
               {type.name}
             </li>
           );
