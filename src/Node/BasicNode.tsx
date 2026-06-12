@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import styles from "./Node.module.css"
 import {
   useEffect,
   useRef,
@@ -7,8 +6,11 @@ import {
   type KeyboardEventHandler,
   type MouseEventHandler,
 } from "react";
-import type { NodeData } from "../utils/types";
-import { useAppState } from "../state/AppStateContext"; 
+import { useAppState } from "../state/AppStateContext";
+import type { NodeData, NodeType } from "../utils/types";
+import CommandPanel from "./CommandPanel";
+import styles from "./Node.module.css";
+import cx from "classnames"
 
 type BasicNodeProps = {
   node: NodeData;
@@ -24,8 +26,9 @@ export default function BasicNode({
   index,
 }: BasicNodeProps) {
   const nodeRef = useRef<HTMLDivElement>(null);
+  const showCommandPanel = isFocused && node?.value?.match(/^\//);
 
-  const {changeNodeValue, removeNodeByIndex, addNode} = useAppState();
+  const { changeNodeValue, changeNodeType,removeNodeByIndex, addNode } = useAppState();
 
   useEffect(() => {
     if (isFocused) {
@@ -40,6 +43,13 @@ export default function BasicNode({
       nodeRef.current.textContent = node.value;
     }
   }, [node]);
+
+  const parseCommand = (nodeType: NodeType) => {
+    if (nodeRef.current) {
+      changeNodeType(index, nodeType);
+      nodeRef.current.textContent = "";
+    }
+  };
 
   const handleInput: InputEventHandler<HTMLDivElement> = ({
     currentTarget,
@@ -58,10 +68,11 @@ export default function BasicNode({
 
     if (event.key === "Enter") {
       event.preventDefault();
-      if (target.textContent?.[0]) {
+      if (target.textContent?.[0] === "/") {
         return;
       }
       addNode({ type: node.type, value: "", id: nanoid() }, index + 1);
+      updateFocusedIndex(index + 1)
     }
 
     if (event.key === "Backspace") {
@@ -78,14 +89,19 @@ export default function BasicNode({
   };
 
   return (
-    <div
-      onInput={handleInput}
-      onClick={handleClick}
-      onKeyDown={onKeyDown}
-      ref={nodeRef}
-      contentEditable
-      suppressContentEditableWarning
-      className={styles.node}
-    />
+    <>
+      {showCommandPanel && (
+        <CommandPanel selectItem={parseCommand} nodeText={node.value} />
+      )}
+      <div
+        onInput={handleInput}
+        onClick={handleClick}
+        onKeyDown={onKeyDown}
+        ref={nodeRef}
+        contentEditable
+        suppressContentEditableWarning
+        className={cx(styles.node, styles[node.type])}
+      />
+    </>
   );
 }

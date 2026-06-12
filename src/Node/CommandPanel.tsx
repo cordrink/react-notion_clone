@@ -53,7 +53,7 @@ export default function CommandPanel({
     ref={ref} 
     className={
         cx(style.panel, {
-            [style.reserve]: overfows,
+          [style.reverse]: overfows,
         })
     }
     >
