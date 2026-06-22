@@ -1,3 +1,6 @@
+import { move } from "@dnd-kit/helpers";
+import type { DragEndEvent } from "@dnd-kit/react";
+import { isSortable } from "@dnd-kit/react/sortable";
 import { useImmer } from "use-immer";
 import type { NodeData, NodeType, Page } from "../utils/types";
 
@@ -47,6 +50,24 @@ export const usePageState = (initialState: Page) => {
     });
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { operation, canceled } = event;
+
+    if (canceled) return;
+
+    setPage((draft) => {
+      const { source } = operation;
+
+      if (isSortable(source)) {
+        const { initialIndex, index } = source;
+
+        if (initialIndex !== index) {
+          draft.nodes = move(draft.nodes, event);
+        }
+      }
+    });
+  };
+
   return {
     nodes: page.nodes,
     title: page.title,
@@ -58,5 +79,6 @@ export const usePageState = (initialState: Page) => {
     setNodes,
     setTitle,
     setCover,
+    handleDragEnd,
   };
 };
