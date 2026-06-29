@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import type { Page } from "../utils/types";
 import { usePageState } from "./useAppState";
+import { withInitialState } from "./withInitialState";
 
 type AppStateContextType = ReturnType<typeof usePageState>;
 
@@ -13,18 +14,16 @@ type AppStateProviderProps = {
   initialState: Page;
 };
 
-export const AppStateProvider = ({
-  children,
-  initialState,
-}: AppStateProviderProps) => {
-  const pageStateHandlers = usePageState(initialState);
+export const AppStateProvider = withInitialState<AppStateProviderProps>(
+  ({ children, initialState }: AppStateProviderProps) => {
+    const pageStateHandlers = usePageState(initialState);
 
-  return (
-    <AppstateContext.Provider value={pageStateHandlers}>
-      {children}
-    </AppstateContext.Provider>
-  );
-};
+    return (
+      <AppstateContext.Provider value={pageStateHandlers}>
+        {children}
+      </AppstateContext.Provider>
+    );
+  },
+);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAppState = () => useContext(AppstateContext);

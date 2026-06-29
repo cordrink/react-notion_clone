@@ -8,7 +8,8 @@ import Title from "./Title";
 import { useFocusednodeIndex } from "./useFocusedNodeindex";
 
 export default function Page() {
-  const { title, nodes, addNode, setTitle, handleDragEnd } = useAppState();
+  const { title, nodes, addNode, cover, setCover, setTitle, handleDragEnd } =
+    useAppState();
 
   const [focusedNodeIndex, setFocusedNodeIndex] = useFocusednodeIndex({
     nodes,
@@ -16,7 +17,7 @@ export default function Page() {
 
   return (
     <>
-      <Cover />
+      <Cover filePath={cover} changePageCover={setCover} />
       <div>
         <Title addNode={addNode} title={title} changePageTitle={setTitle} />
         <DragDropProvider onDragEnd={handleDragEnd}>

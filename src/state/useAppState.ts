@@ -1,11 +1,12 @@
 import { move } from "@dnd-kit/helpers";
 import type { DragEndEvent } from "@dnd-kit/react";
 import { isSortable } from "@dnd-kit/react/sortable";
-import { useImmer } from "use-immer";
 import type { NodeData, NodeType, Page } from "../utils/types";
+import { updatePage } from "../utils/updatePage";
+import { useSyncedState } from "./useSyncedState";
 
 export const usePageState = (initialState: Page) => {
-  const [page, setPage] = useImmer<Page>(initialState);
+  const [page, setPage] = useSyncedState(initialState, updatePage);
 
   const addNode = (node: NodeData, index: number) => {
     setPage((draft) => {
